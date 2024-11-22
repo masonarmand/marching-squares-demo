@@ -38,15 +38,11 @@ int line_table[16][4] = {
         { -1, -1, -1, -1 }
 };
 
-Texture2D grass_tex;
-
 
 int main(void)
 {
         InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "msq_demo");
         SetTargetFPS(60);
-
-        grass_tex = LoadTexture("res/grass.png");
 
         while (!WindowShouldClose()) {
                 /* add point to grid on mouse click */
