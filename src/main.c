@@ -3,11 +3,12 @@
 #include <stdio.h>
 
 
-#define GRID_WIDTH 32
-#define GRID_HEIGHT 32
-#define CELL_SIZE 16
+#define GRID_WIDTH 64
+#define GRID_HEIGHT 64
+#define CELL_SIZE 8
 #define SCREEN_WIDTH (GRID_WIDTH * CELL_SIZE)
 #define SCREEN_HEIGHT (GRID_HEIGHT * CELL_SIZE)
+#define PAINT_SIZE 3.0f
 
 int grid[GRID_HEIGHT + 1][GRID_WIDTH + 1] = {0};
 
@@ -17,6 +18,7 @@ int get_state(int a, int b, int c, int d);
 bool is_valid_point(int x, int y);
 void draw_grid(void);
 void draw_edge(Vector2 mid_points[4], int state);
+void paint_grid(int grid_x, int grid_y, int state, int radius);
 
 /* Line stroke for each point configuration within the square */
 int line_table[16][4] = {
@@ -51,22 +53,19 @@ int main(void)
                 int grid_x = (int)(mouse_pos.x / CELL_SIZE);
                 int grid_y = (int)(mouse_pos.y / CELL_SIZE);
 
-                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                        if (is_valid_point(grid_x, grid_y))
-                                grid[grid_y][grid_x] = 1;
+                if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+                        paint_grid(grid_x, grid_y, 1, PAINT_SIZE);
                 }
-                if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-                        if (is_valid_point(grid_x, grid_y))
-                                grid[grid_y][grid_x] = 0;
+                if (IsMouseButtonDown(MOUSE_RIGHT_BUTTON)) {
+                        paint_grid(grid_x, grid_y, 0, PAINT_SIZE);
                 }
 
                 BeginDrawing();
                 ClearBackground(BLACK);
-                draw_grid();
+                /*draw_grid();*/
                 draw_msq();
                 EndDrawing();
         }
-        UnloadTexture(grass_tex);
         CloseWindow();
         return 0;
 }
@@ -133,3 +132,15 @@ void draw_grid(void)
 }
 
 
+void paint_grid(int grid_x, int grid_y, int state, int radius)
+{
+        for (int y = -radius; y <= radius; y++) {
+                for (int x = -radius; x <= radius; x++) {
+                        int nx = grid_x + x;
+                        int ny = grid_y + y;
+                        if (is_valid_point(nx, ny) && (x * x + y * y <= radius * radius)) {
+                                grid[ny][nx] = state;
+                        }
+                }
+        }
+}
