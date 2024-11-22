@@ -75,8 +75,8 @@ void draw_msq(void)
 {
         int y;
         int x;
-        for (y = 0; y < GRID_HEIGHT - 1; y++) {
-                for (x = 0; x < GRID_WIDTH - 1; x++) {
+        for (y = 0; y < GRID_HEIGHT; y++) {
+                for (x = 0; x < GRID_WIDTH; x++) {
                         int i;
                         float pos_x = x * CELL_SIZE;
                         float pos_y = y * CELL_SIZE;
@@ -120,8 +120,8 @@ void draw_grid(void)
 {
         int x;
         int y;
-        for (int y = 0; y <= GRID_HEIGHT; y++) {
-                for (int x = 0; x <= GRID_WIDTH; x++) {
+        for (y = 0; y <= GRID_HEIGHT; y++) {
+                for (x = 0; x <= GRID_WIDTH; x++) {
                         Vector2 point = {x * CELL_SIZE, y * CELL_SIZE};
                         DrawCircleV(point, 2, WHITE);
                         if (grid[y][x] == 1) {
@@ -134,8 +134,10 @@ void draw_grid(void)
 
 void paint_grid(int grid_x, int grid_y, int state, int radius)
 {
-        for (int y = -radius; y <= radius; y++) {
-                for (int x = -radius; x <= radius; x++) {
+        int y;
+        int x;
+        for (y = -radius; y <= radius; y++) {
+                for (x = -radius; x <= radius; x++) {
                         int nx = grid_x + x;
                         int ny = grid_y + y;
                         if (is_valid_point(nx, ny) && (x * x + y * y <= radius * radius)) {
